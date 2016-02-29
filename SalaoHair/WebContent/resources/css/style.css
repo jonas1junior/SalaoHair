@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+.ui-widget, .ui-widget .ui-widget {
+	font-size: 92%;
+}
+
+.xls{
+	position: fixed;
+	right: 50px;
+}
+
+.pdf{
+	position: fixed;
+	right: 20px;
+}
+
+.titulo{
+	 font-size:30px;
+	 color: #0073ea;
+}

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+				 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="endacao" value="#{enderecoBean.acao}" />
+			<f:viewParam name="endcod" value="#{enderecoBean.codigo}" />
+			<f:event listener="#{enderecoBean.carregarCadastro}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	
+	<ui:define name="conteudo">
+		<h:form id="frmEndCadastro">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Endereço" />
+				</f:facet>
+			</p:toolbar>
+			
+			<h:panelGrid id="pnlEndCadastro" columns="2" title="Logredouro">
+				<p:outputLabel value="Tipo:" />
+				<p:selectOneMenu value="#{enderecoBean.endCadastro.logradouro.tipoLogradouro}"
+								 converter="logradouroConverter">
+					<f:selectItem itemLabel="Selecione um tipo." itemValue="" />
+					<f:selectItems value="#{enderecoBean.listaTipoLogradouros}"
+								   itemValue="#{tipoLogradouro}"
+								   itemLabel="#{tipoLogradouro.descricao}"
+								   var="tipoLogradouro" />
+					<f:validateBean />
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Descrição:" />
+				<p:inputText value="#{logradouroBean.logradouroCadastro.descricao}"
+							 maxlength="50" size="50"
+							 converterMessage="Informe um valor válido para a descrição do Logradouro!">
+					<f:validateBean />
+				</p:inputText>
+				
+				<p:outputLabel value="Número:" />
+				<p:inputText value="#{logradouroBean.logradouroCadastro.numero}"
+							 size="10" maxlength="10"
+							 converterMessage="Informe um valor válido para o número!">
+					<f:validateBean />
+					<f:convertNumber />
+				</p:inputText>
+
+				<p:outputLabel value="Complemento:" />
+				<p:inputText value="#{logradouroBean.logradouroCadastro.complemento}"
+							 size="20" maxlength="20">
+					<f:validateBean />
+				</p:inputText>
+
+				<p:outputLabel value="Estado:" />
+				<p:selectOneMenu value="#{enderecoBean.endCadastro.bairro.cidade.estado}"
+								 converter="estadoConverter">
+					<f:selectItem itemLabel="Selecione um Estado." itemValue="" />
+					<f:selectItems value="#{enderecoBean.listaEstados}"
+								   itemValue="#{estado}"
+								   itemLabel="#{estado.descricao} - #{estado.sigla}"
+								   var="estado" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Cidade:" />
+				<p:selectOneMenu value="#{enderecoBean.endCadastro.bairro.cidade}"
+								 converter="cidadeConverter" id="menuCidade">
+					<f:selectItem itemLabel="Selecione uma Cidade." itemValue="" />
+					<f:selectItems value="#{enderecoBean.listaCidades}"
+								   itemValue="#{cidade}"
+								   itemLabel="#{cidade.descricao}"
+								   var="cidade" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Bairro:" />
+				<p:selectOneMenu value="#{enderecoBean.endCadastro.bairro}"
+								 converter="bairroConverter">
+					<f:selectItem itemLabel="Selecione um Bairro." itemValue="" />
+					<f:selectItems value="#{enderecoBean.listaBairros}"
+								   itemValue="#{bairro}"
+								   itemLabel="#{bairro.descricao}"
+								   var="bairro" />
+					<f:validateBean />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Referências:"  />
+				<p:inputText value="#{logradouroBean.logradouroCadastro.referencias}"
+							 size="50" maxlength="255">
+					<f:validateBean />
+				</p:inputText>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="5">
+				<p:commandButton value="Novo"
+								 update=":frmEndCadastro:pnlEndCadastro"
+								 actionListener="#{enderecoBean.novo}" />
+
+				<p:commandButton value="Salvar"
+								 actionListener="#{enderecoBean.salvar}"
+								 update=":msgGlobal :frmEndCadastro:pnlEndCadastro"
+								 action="enderecoPesquisa.xhtml" />
+
+				<p:commandButton value="Excluir"
+								 actionListener="#{enderecoBean.excluir}"
+								 update=":msgGlobal"
+								 action="enderecoPesquisa.xhtml" />
+
+				<p:commandButton value="Editar"
+								 actionListener="#{enderecoBean.editar}"
+								 update=":msgGlobal :frmEndCadastro:pnlEndCadastro"
+								 action="enderecoPesquisa.xhtml" />
+
+				<p:button value="Voltar"
+						  outcome="/pages/enderecoPesquisa.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

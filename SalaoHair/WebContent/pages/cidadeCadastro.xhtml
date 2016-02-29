@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+				 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="/templates/modeloGeral.xhtml">
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="cidadeacao" value="#{cidadeBean.acao}" />
+			<f:viewParam name="cidadecod" value="#{cidadeBean.codigo}" />
+			<f:event listener="#{cidadeBean.carregarCadastro}" type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+	
+	<ui:define name="conteudo">
+		<h:form id="frmCidadeCadastro">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Cidade" />
+				</f:facet>
+			</p:toolbar>
+			
+			<h:panelGrid id="pnlCidadeCadastro" columns="2" title="Cidade">
+				<p:outputLabel value="Estado:" />
+				<p:selectOneMenu value="#{estadoBean.estadoCadastro}"
+								 converter="estadoConverter">
+					<f:selectItem itemLabel="Selecione um Estado." itemValue="" />
+					<f:selectItems value="#{estadoBean.lista}"
+								   itemValue="#{estado}"
+								   itemLabel="#{estado.descricao} - #{estado.sigla}"
+								   var="estado" />
+					<f:validateBean />
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Cidade:" />
+				<p:selectOneMenu value="#{estadoBean.estadoCadastro}"
+								 converter="cidadeConverter">
+					<f:selectItem itemLabel="Selecione uma Cidade." itemValue="" />
+					<f:selectItems value="#{cidadeBean.lista}"
+								   itemValue="#{cidade}"
+								   itemLabel="#{cidade.descricao}"
+								   var="cidade" />
+					<f:validateBean />
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Descrição:" />
+				<p:inputText value="#{cidadeBean.cidadeCadastro.descricao}"
+							 maxlength="30" size="50"
+							 converterMessage="Informe um valor válido para a descrição!">
+					<f:validateBean />
+				</p:inputText>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="5">
+				<p:commandButton value="Novo"
+								 update=":frmCidadeCadastro:pnlCidadeCadastro"
+								 actionListener="#{cidadeBean.novo}" />
+
+				<p:commandButton value="Salvar"
+								 actionListener="#{cidadeBean.salvar}"
+								 update=":msgGlobal :frmCidadeCadastro:pnlCidadeCadastro"
+								 action="cidadePesquisa.xhtml" />
+
+				<p:commandButton value="Excluir"
+								 actionListener="#{cidadeBean.excluir}"
+								 update=":msgGlobal"
+								 action="cidadePesquisa.xhtml" />
+
+				<p:commandButton value="Editar"
+								 actionListener="#{cidadeBean.editar}"
+								 update=":msgGlobal :frmCidadeCadastro:pnlCidadeCadastro"
+								 action="cidadePesquisa.xhtml" />
+
+				<p:button value="Voltar"
+						  outcome="/pages/cidadePesquisa.xhtml" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
